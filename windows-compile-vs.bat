@@ -398,6 +398,7 @@ call configure^
  --with-crypto=shared^
  --with-curl^
  --with-dom^
+ --with-ffi^
  --with-gd=shared^
  --with-gmp^
  --with-iconv^
@@ -475,6 +476,7 @@ if "%PM_VERSION_MAJOR%" geq "5" (
 (echo opcache.optimization_level=0x7FFEBFFF)>>"%php_ini%"
 (echo opcache.cache_id=PHP_BINARY ;prevent sharing SHM between different binaries - they won't work because of ASLR)>>"%php_ini%"
 (echo ;Optional extensions, supplied for plugin use)>>"%php_ini%"
+(echo extension=php_ffi.dll)>>"%php_ini%"
 (echo extension=php_fileinfo.dll)>>"%php_ini%"
 (echo extension=php_gd.dll)>>"%php_ini%"
 (echo extension=php_grpc.dll)>>"%php_ini%"
