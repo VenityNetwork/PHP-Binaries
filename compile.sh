@@ -25,6 +25,7 @@ EXT_CHUNKUTILS2_VERSION="0.3.5"
 EXT_XDEBUG_VERSION="3.3.1"
 EXT_IGBINARY_VERSION="3.2.15"
 EXT_CRYPTO_VERSION="abbe7cbf869f96e69f2ce897271a61d32f43c7c0"
+EXT_SNAPPY_VERSION="0.2.1"
 EXT_RECURSIONGUARD_VERSION="0.1.0"
 EXT_LIBDEFLATE_VERSION="0.2.1"
 EXT_MORTON_VERSION="0.1.2"
@@ -1321,6 +1322,14 @@ git submodule update --init --recursive >> "$DIR/install.log" 2>&1
 cd "$BUILD_DIR"
 write_done
 
+echo -n "  snappy: downloading $EXT_SNAPPY_VERSION..."
+git clone https://github.com/kjdev/php-ext-snappy.git "$BUILD_DIR/php/ext/snappy" >> "$DIR/install.log" 2>&1
+cd "$BUILD_DIR/php/ext/snappy"
+git checkout "$EXT_SNAPPY_VERSION" >> "$DIR/install.log" 2>&1
+git submodule update --init --recursive >> "$DIR/install.log" 2>&1
+cd "$BUILD_DIR"
+write_done
+
 get_github_extension "leveldb" "$EXT_LEVELDB_VERSION" "pmmp" "php-leveldb"
 
 get_github_extension "chunkutils2" "$EXT_CHUNKUTILS2_VERSION" "pmmp" "ext-chunkutils2"
@@ -1557,6 +1566,7 @@ $HAVE_MYSQLI \
 --enable-grpc="$INSTALL_DIR" \
 --enable-protobuf \
 --enable-zstd \
+--enable-snappy \
 --enable-vanillagenerator \
 --enable-opcache=$HAVE_OPCACHE \
 --enable-opcache-jit=$HAVE_OPCACHE_JIT \

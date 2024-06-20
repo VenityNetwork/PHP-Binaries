@@ -32,6 +32,7 @@ set PHP_CHUNKUTILS2_VER=0.3.5
 set PHP_IGBINARY_VER=3.2.15
 set PHP_LEVELDB_VER=317fdcd8415e1566fc2835ce2bdb8e19b890f9f3
 set PHP_CRYPTO_VER=abbe7cbf869f96e69f2ce897271a61d32f43c7c0
+set PHP_SNAPPY_VER=0.2.1
 set PHP_RECURSIONGUARD_VER=0.1.0
 set PHP_MORTON_VER=0.1.2
 set PHP_LIBDEFLATE_VER=0.2.1
@@ -346,6 +347,13 @@ git checkout %PHP_CRYPTO_VER% >>"%log_file%" 2>&1 || exit 1
 git submodule update --init --recursive >>"%log_file%" 2>&1 || exit 1
 cd /D ..
 
+call :pm-echo " - snappy: downloading %PHP_SNAPPY_VER%..."
+git clone https://github.com/kjdev/php-ext-snappy.git snappy >>"%log_file%" 2>&1 || exit 1
+cd /D snappy
+git checkout %PHP_SNAPPY_VER% >>"%log_file%" 2>&1 || exit 1
+git submodule update --init --recursive >>"%log_file%" 2>&1 || exit 1
+cd /D ..
+
 cd /D ..\..
 
 :skip
@@ -384,6 +392,7 @@ call configure^
  --enable-phar^
  --enable-vanillagenerator=shared^
  --enable-zstd^
+ --enable-snappy^
  --enable-grpc=shared^
  --enable-protobuf=shared^
  --enable-recursionguard=shared^
