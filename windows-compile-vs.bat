@@ -24,6 +24,7 @@ set LEVELDB_MCPE_VER=1c7564468b41610da4f498430e795ca4de0931ff
 set LIBDEFLATE_VER=dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f
 set LIBRDKAFKA_VER=2.1.1
 set LIBZSTD_VER=1.5.5
+set LIBSNAPPY_VER=1.2.1
 set LIBGRPC_VER=1.56.2
 
 set PHP_PMMPTHREAD_VER=6.1.0
@@ -32,7 +33,7 @@ set PHP_CHUNKUTILS2_VER=0.3.5
 set PHP_IGBINARY_VER=3.2.15
 set PHP_LEVELDB_VER=317fdcd8415e1566fc2835ce2bdb8e19b890f9f3
 set PHP_CRYPTO_VER=abbe7cbf869f96e69f2ce897271a61d32f43c7c0
-set PHP_SNAPPY_VER=0.2.1
+set PHP_SNAPPY_VER=ab8b2b7375641f47deb21d8e8ba1a00ea5364cf6
 set PHP_RECURSIONGUARD_VER=0.1.0
 set PHP_MORTON_VER=0.1.2
 set PHP_LIBDEFLATE_VER=0.2.1
@@ -141,6 +142,27 @@ call bin\phpsdk_deps.bat -u -t %VC_VER% -b %PHP_MAJOR_VER% -a %ARCH% -f -d %DEPS
 
 
 call :pm-echo "Getting additional dependencies..."
+cd /D "%DEPS_DIR%"
+
+call :pm-echo "Downloading google/snappy version %LIBSNAPPY_VER%..."
+git clone -b %LIBSNAPPY_VER% https://github.com/google/snappy >>"%log_file%" 2>&1 || exit 1
+cd /D snappy
+
+call :pm-echo "Updating submodules..."
+git submodule update --depth=1 --init >>"%log_file%" 2>&1 || exit 1
+
+md build
+cd build
+cmake -GNinja^
+ -DCMAKE_PREFIX_PATH="%DEPS_DIR%"^
+ -DCMAKE_INSTALL_PREFIX="%DEPS_DIR%"^
+ -DCMAKE_BUILD_TYPE="%MSBUILD_CONFIGURATION%"^
+ .. >>"%log_file%" 2>&1 || exit 1
+
+call :pm-echo "Compiling..."
+cmake --build . >> "%log_file%" 2>&1 || exit 1
+call :pm-echo "Installing files..."
+cmake -P cmake_install.cmake >> "%log_file%" 2>&1 || exit 1
 cd /D "%DEPS_DIR%"
 
 call :pm-echo "Downloading grpc/grpc version %LIBGRPC_VER%..."
@@ -352,7 +374,9 @@ git clone https://github.com/kjdev/php-ext-snappy.git snappy >>"%log_file%" 2>&1
 cd /D snappy
 git checkout %PHP_SNAPPY_VER% >>"%log_file%" 2>&1 || exit 1
 git submodule update --init --recursive >>"%log_file%" 2>&1 || exit 1
-cd /D ..
+cd /D snappy
+git checkout %LIBSNAPPY_VER% >>"%log_file%" 2>&1 || exit 1
+cd /D ..\..
 
 cd /D ..\..
 
