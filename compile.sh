@@ -556,8 +556,6 @@ mv php-src-php-$PHP_VERSION php
 write_done
 
 function build_snappy {
-  echo -n ${pwd}
-
 	write_library snappy "$LIBSNAPPY_VER"
 	local snappy_dir="./snappy-$LIBSNAPPY_VER"
 
@@ -590,11 +588,9 @@ function build_snappy {
 	fi
 
 	write_install
-  make install >> "$DIR/install.log" 2>&1
+	make install >> "$DIR/install.log" 2>&1
 	popd >> "$DIR/install.log" 2>&1
-  popd >> "$DIR/install.log" 2>&1
-
-	echo -n ${pwd}
+	popd >> "$DIR/install.log" 2>&1
 
 	write_done
 }
