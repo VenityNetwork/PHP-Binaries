@@ -42,9 +42,10 @@ set PHP_XDEBUG_VER=3.3.1
 set PHP_ARRAYDEBUG_VER=0.2.0
 set PHP_ENCODING_VER=0.3.0
 set PHP_VANILLAGENERATOR_VER=2.1.7
+set PHP_BEDROCKBUF_VER=f792acd2e9e4ac518a9b0b14dd72ab7ab4340358
 set PHP_LIBKAFKA_VER=6.0.3
 set PHP_ZSTD_VER=0.13.0
-SET PHP_GRPC_VER=1.57.3
+set PHP_GRPC_VER=1.57.3
 
 set script_path=%~dp0
 set log_file=%script_path%compile.log
@@ -347,6 +348,7 @@ cd /D php-src\ext
 
 call :get-extension-zip-from-github "pmmpthread"            "%PHP_PMMPTHREAD_VER%"            "pmmp"     "ext-pmmpthread"          || exit 1
 call :get-extension-zip-from-github "vanillagenerator"  "%PHP_VANILLAGENERATOR_VER%"    "NetherGamesMC"     "ext-vanillagenerator"  || exit 1
+call :get-extension-zip-from-github "bedrockbuf"            "%PHP_BEDROCKBUF_VER%"            "AkmalFairuz"     "ext-bedrockbuf"  || exit 1
 call :get-extension-zip-from-github "yaml"                  "%PHP_YAML_VER%"                  "php"      "pecl-file_formats-yaml"  || exit 1
 call :get-extension-zip-from-github "chunkutils2"           "%PHP_CHUNKUTILS2_VER%"           "pmmp"     "ext-chunkutils2"         || exit 1
 call :get-extension-zip-from-github "igbinary"              "%PHP_IGBINARY_VER%"              "igbinary" "igbinary"                || exit 1
@@ -415,6 +417,7 @@ call configure^
  --enable-opcache-jit=%PHP_JIT_ENABLE_ARG%^
  --enable-phar^
  --enable-vanillagenerator=shared^
+ --enable-bedrockbuf=shared^
  --enable-zstd^
  --enable-snappy^
  --enable-grpc=shared^
@@ -514,6 +517,7 @@ if "%PM_VERSION_MAJOR%" geq "5" (
 (echo extension=php_grpc.dll)>>"%php_ini%"
 (echo extension=php_protobuf.dll)>>"%php_ini%"
 (echo extension=php_vanillagenerator.dll)>>"%php_ini%"
+(echo extension=php_bedrockbuf.dll)>>"%php_ini%"
 (echo extension=php_rdkafka.dll)>>"%php_ini%"
 (echo extension=php_mysqli.dll)>>"%php_ini%"
 (echo extension=php_sqlite3.dll)>>"%php_ini%"

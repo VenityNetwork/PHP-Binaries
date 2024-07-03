@@ -37,6 +37,7 @@ EXT_RDKAFKA_VERSION="6.0.3"
 EXT_ZSTD_VERSION="0.13.0"
 EXT_GRPC_VERSION="1.57.3"
 EXT_VANILLAGENERATOR_VERSION="abd059fd2ca79888aab3b9c5070d83ceea55fada"
+EXT_BEDROCKBUF_VERSION="f792acd2e9e4ac518a9b0b14dd72ab7ab4340358"
 
 function write_out {
 	echo "[$1] $2"
@@ -1384,6 +1385,8 @@ get_github_extension "grpc" "$EXT_GRPC_VERSION" "larryTheCoder" "php-grpc"
 
 get_github_extension "vanillagenerator" "$EXT_VANILLAGENERATOR_VERSION" "NetherGamesMC" "ext-vanillagenerator"
 
+get_github_extension "bedrockbuf" "$EXT_BEDROCKBUF_VERSION" "AkmalFairuz" "ext-bedrockbuf"
+
 get_github_extension "rdkafka" "$EXT_RDKAFKA_VERSION" "arnaud-lb" "php-rdkafka"
 
 get_github_extension "zstd" "$EXT_ZSTD_VERSION" "kjdev" "php-ext-zstd"
@@ -1605,6 +1608,7 @@ $HAVE_MYSQLI \
 --enable-zstd \
 --enable-snappy \
 --enable-vanillagenerator \
+--enable-bedrockbuf \
 --enable-opcache=$HAVE_OPCACHE \
 --enable-opcache-jit=$HAVE_OPCACHE_JIT \
 --enable-igbinary \
