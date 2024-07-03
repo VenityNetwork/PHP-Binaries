@@ -417,7 +417,7 @@ call configure^
  --enable-opcache-jit=%PHP_JIT_ENABLE_ARG%^
  --enable-phar^
  --enable-vanillagenerator=shared^
- --enable-bedrockbuf=shared^
+ --enable-bedrockbuf^
  --enable-zstd^
  --enable-snappy^
  --enable-grpc=shared^
