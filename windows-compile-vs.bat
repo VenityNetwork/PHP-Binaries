@@ -42,7 +42,7 @@ set PHP_XDEBUG_VER=3.3.1
 set PHP_ARRAYDEBUG_VER=0.2.0
 set PHP_ENCODING_VER=0.3.0
 set PHP_VANILLAGENERATOR_VER=2.1.7
-set PHP_BEDROCKBUF_VER=d9b4598057680e9f5462b362679a779ab50e324f
+set PHP_BEDROCKBUF_VER=8eb288ad9c7408db4c558f566130d7b4f3e81c73
 set PHP_LIBKAFKA_VER=6.0.3
 set PHP_ZSTD_VER=0.13.0
 set PHP_GRPC_VER=1.57.3
@@ -517,7 +517,6 @@ if "%PM_VERSION_MAJOR%" geq "5" (
 (echo extension=php_grpc.dll)>>"%php_ini%"
 (echo extension=php_protobuf.dll)>>"%php_ini%"
 (echo extension=php_vanillagenerator.dll)>>"%php_ini%"
-(echo extension=php_bedrockbuf.dll)>>"%php_ini%"
 (echo extension=php_rdkafka.dll)>>"%php_ini%"
 (echo extension=php_mysqli.dll)>>"%php_ini%"
 (echo extension=php_sqlite3.dll)>>"%php_ini%"
