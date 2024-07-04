@@ -36,7 +36,7 @@ set PHP_LIBDEFLATE_VER=0.2.1
 set PHP_XXHASH_VER=0.2.0
 set PHP_XDEBUG_VER=3.2.2
 set PHP_ARRAYDEBUG_VER=0.2.0
-set PHP_ENCODING_VER=0.2.3
+set PHP_BEDROCKBUF=8eb288ad9c7408db4c558f566130d7b4f3e81c73
 
 set script_path=%~dp0
 set log_file=%script_path%compile.log
@@ -237,7 +237,7 @@ call :get-extension-zip-from-github "libdeflate"            "%PHP_LIBDEFLATE_VER
 call :get-extension-zip-from-github "xxhash"                "%PHP_XXHASH_VER%"                "pmmp"     "ext-xxhash"              || exit 1
 call :get-extension-zip-from-github "xdebug"                "%PHP_XDEBUG_VER%"                "xdebug"   "xdebug"                  || exit 1
 call :get-extension-zip-from-github "arraydebug"            "%PHP_ARRAYDEBUG_VER%"            "pmmp"     "ext-arraydebug"          || exit 1
-call :get-extension-zip-from-github "encoding"              "%PHP_ENCODING_VER%"              "pmmp"     "ext-encoding"            || exit 1
+call :get-extension-zip-from-github "bedrockbuf"            "%PHP_BEDROCKBUF_VER%"            "AkmalFairuz"  "ext-bedrockbuf"          || exit 1
 
 call :pm-echo " - crypto: downloading %PHP_CRYPTO_VER%..."
 git clone https://github.com/bukka/php-crypto.git crypto >>"%log_file%" 2>&1 || exit 1
@@ -271,7 +271,7 @@ call configure^
  --enable-chunkutils2=shared^
  --enable-com-dotnet^
  --enable-ctype^
- --enable-encoding=shared^
+ --enable-bedrockbuf^
  --enable-fileinfo=shared^
  --enable-filter^
  --enable-hash^
@@ -394,7 +394,6 @@ if "%PHP_JIT_ENABLE_ARG%"=="on" (
 (echo xdebug.gc_stats_output_name=gcstats.%%s.%%p.%%r)>>"%php_ini%"
 (echo xdebug.trace_output_name=trace.%%s.%%p.%%r)>>"%php_ini%"
 (echo ;Optional experimental extensions)>>"%php_ini%"
-(echo extension=php_encoding.dll)>>"%php_ini%"
 
 call :pm-echo "Xdebug is included, but disabled by default. To enable it, change 'xdebug.mode' in your php.ini file."
 

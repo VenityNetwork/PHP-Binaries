@@ -27,7 +27,7 @@ EXT_LIBDEFLATE_VERSION="0.2.1"
 EXT_MORTON_VERSION="0.1.2"
 EXT_XXHASH_VERSION="0.2.0"
 EXT_ARRAYDEBUG_VERSION="0.2.0"
-EXT_ENCODING_VERSION="0.2.3"
+EXT_BEDROCKBUF="8eb288ad9c7408db4c558f566130d7b4f3e81c73"
 
 function write_out {
 	echo "[$1] $2"
@@ -1066,7 +1066,7 @@ get_github_extension "xxhash" "$EXT_XXHASH_VERSION" "pmmp" "ext-xxhash"
 
 get_github_extension "arraydebug" "$EXT_ARRAYDEBUG_VERSION" "pmmp" "ext-arraydebug"
 
-get_github_extension "encoding" "$EXT_ENCODING_VERSION" "pmmp" "ext-encoding"
+get_github_extension "bedrockbuf" "$EXT_BEDROCKBUF_VERSION" "AkmalFairuz" "ext-bedrockbuf"
 
 write_library "PHP" "$PHP_VERSION"
 
@@ -1193,7 +1193,7 @@ $HAVE_MYSQLI \
 --enable-recursionguard \
 --enable-xxhash \
 --enable-arraydebug \
---enable-encoding \
+--enable-bedrockbuf \
 $HAVE_VALGRIND \
 $CONFIGURE_FLAGS >> "$DIR/install.log" 2>&1
 write_compile
