@@ -36,7 +36,7 @@ set PHP_LIBDEFLATE_VER=0.2.1
 set PHP_XXHASH_VER=0.2.0
 set PHP_XDEBUG_VER=3.2.2
 set PHP_ARRAYDEBUG_VER=0.2.0
-set PHP_BEDROCKBUF=8eb288ad9c7408db4c558f566130d7b4f3e81c73
+set PHP_BEDROCKBUF_VER=8eb288ad9c7408db4c558f566130d7b4f3e81c73
 
 set script_path=%~dp0
 set log_file=%script_path%compile.log
