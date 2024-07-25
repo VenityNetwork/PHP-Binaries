@@ -13,6 +13,7 @@ OPENSSL_VERSION="3.1.4"
 LIBZIP_VERSION="1.10.1"
 SQLITE3_VERSION="3440200" #3.44.2
 LIBDEFLATE_VERSION="dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f" #1.19
+LIBZSTD_VER="1.5.5"
 
 EXT_PTHREADS_VERSION="4.2.2"
 EXT_PMMPTHREAD_VERSION="6.0.12"
@@ -28,6 +29,7 @@ EXT_MORTON_VERSION="0.1.2"
 EXT_XXHASH_VERSION="0.2.0"
 EXT_ARRAYDEBUG_VERSION="0.2.0"
 EXT_BEDROCKBUF_VERSION="5e65852fdd0893b8e34a6f82a1f81cffa5999edb"
+EXT_ZSTD_VERSION="0.13.3"
 
 function write_out {
 	echo "[$1] $2"
@@ -712,6 +714,49 @@ function build_yaml {
 	write_done
 }
 
+function build_zstd {
+	if [ "$LDORIGIN_MODIFY" != "no" ]; then
+		LDFLAGS="-Wl,-rpath='\$ORIGIN/../lib' -Wl,-rpath-link='\$ORIGIN/../lib'";
+	fi
+
+	write_library zstd "$LIBZSTD_VER"
+	local zstd_dir="./zstd-$LIBZSTD_VER"
+
+	if cant_use_cache "$zstd_dir"; then
+		rm -rf "$zstd_dir"
+		write_download
+		download_file "https://github.com/facebook/zstd/archive/v$LIBZSTD_VER.tar.gz" "zstd" | tar -zx >> "$DIR/install.log" 2>&1
+		echo -n " checking..."
+		pushd $zstd_dir/build/cmake >> "$DIR/install.log" 2>&1
+	  if [ "$DO_STATIC" != "yes" ]; then
+		  local EXTRA_FLAGS="-DBUILD_SHARED_LIBS=ON"
+	  else
+		  local EXTRA_FLAGS=""
+	  fi
+		cmake . \
+			-DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
+			-DCMAKE_PREFIX_PATH="$INSTALL_DIR" \
+			-DCMAKE_INSTALL_LIBDIR=lib \
+			-DCMAKE_BUILD_TYPE=Release \
+			$CMAKE_GLOBAL_EXTRA_FLAGS \
+			$EXTRA_FLAGS \
+			>> "$DIR/install.log" 2>&1
+		write_compile
+		make -j $THREADS >> "$DIR/install.log" 2>&1 && mark_cache
+	else
+		write_caching
+		pushd "$zstd_dir"
+	fi
+	write_install
+	make install >> "$DIR/install.log" 2>&1
+	popd >> "$DIR/install.log" 2>&1
+	write_done
+
+	if [ "$LDORIGIN_MODIFY" != "no" ]; then
+		LDFLAGS="-Wl,-rpath='\$\$ORIGIN/../lib' -Wl,-rpath-link='\$\$ORIGIN/../lib'";
+	fi
+}
+
 function build_leveldb {
 	write_library leveldb "$LEVELDB_VERSION"
 	local leveldb_dir="./leveldb-$LEVELDB_VERSION"
@@ -985,6 +1030,7 @@ build_openssl
 build_curl
 build_yaml
 build_leveldb
+build_zstd
 if [ "$COMPILE_GD" == "yes" ]; then
 	build_libpng
 	build_libjpeg
@@ -1067,6 +1113,8 @@ get_github_extension "xxhash" "$EXT_XXHASH_VERSION" "pmmp" "ext-xxhash"
 get_github_extension "arraydebug" "$EXT_ARRAYDEBUG_VERSION" "pmmp" "ext-arraydebug"
 
 get_github_extension "bedrockbuf" "$EXT_BEDROCKBUF_VERSION" "AkmalFairuz" "ext-bedrockbuf"
+
+get_github_extension "zstd" "$EXT_ZSTD_VERSION" "kjdev" "php-ext-zstd"
 
 write_library "PHP" "$PHP_VERSION"
 
@@ -1173,6 +1221,7 @@ $THREAD_EXT_FLAGS \
 --with-pdo-sqlite \
 --with-pdo-mysql \
 --with-pic \
+--with-libzstd \
 --enable-phar \
 --enable-ctype \
 --enable-sockets \
@@ -1194,6 +1243,7 @@ $HAVE_MYSQLI \
 --enable-xxhash \
 --enable-arraydebug \
 --enable-bedrockbuf \
+--enable-zstd \
 $HAVE_VALGRIND \
 $CONFIGURE_FLAGS >> "$DIR/install.log" 2>&1
 write_compile
@@ -1347,6 +1397,7 @@ if [ "$DO_CLEANUP" == "yes" ]; then
 	rm -f "$INSTALL_DIR/bin/curl-config"* >> "$DIR/install.log" 2>&1
 	rm -f "$INSTALL_DIR/bin/c_rehash"* >> "$DIR/install.log" 2>&1
 	rm -f "$INSTALL_DIR/bin/openssl"* >> "$DIR/install.log" 2>&1
+	rm -f "$INSTALL_DIR/bin/zstd"* >> "$DIR/install.log" 2>&1
 	rm -r -f "$INSTALL_DIR/man" >> "$DIR/install.log" 2>&1
 	rm -r -f "$INSTALL_DIR/share/man" >> "$DIR/install.log" 2>&1
 	rm -r -f "$INSTALL_DIR/php" >> "$DIR/install.log" 2>&1

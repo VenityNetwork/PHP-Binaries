@@ -22,6 +22,7 @@ set LIBYAML_VER=0.2.5
 set PTHREAD_W32_VER=3.0.0
 set LEVELDB_MCPE_VER=1c7564468b41610da4f498430e795ca4de0931ff
 set LIBDEFLATE_VER=dd12ff2b36d603dbb7fa8838fe7e7176fcbd4f6f
+set LIBGRPC_VER=1.56.2
 
 set PHP_PTHREADS_VER=4.2.2
 set PHP_PMMPTHREAD_VER=6.0.12
@@ -37,6 +38,7 @@ set PHP_XXHASH_VER=0.2.0
 set PHP_XDEBUG_VER=3.2.2
 set PHP_ARRAYDEBUG_VER=0.2.0
 set PHP_BEDROCKBUF_VER=8eb288ad9c7408db4c558f566130d7b4f3e81c73
+set PHP_ZSTD_VER=0.13.3
 
 set script_path=%~dp0
 set log_file=%script_path%compile.log
@@ -130,6 +132,22 @@ call bin\phpsdk_deps.bat -u -t %VC_VER% -b %PHP_MAJOR_VER% -a %ARCH% -f -d %DEPS
 
 
 call :pm-echo "Getting additional dependencies..."
+cd /D "%DEPS_DIR%"
+
+call :pm-echo "Downloading zstd version %LIBZSTD_VER%..."
+call :get-zip "https://github.com/facebook/zstd/archive/v%LIBZSTD_VER%.zip" || exit 1
+move zstd-%LIBZSTD_VER% zstd >> "%log_file%" 2>&1
+cd zstd/build/cmake
+call :pm-echo "Generating build configuration..."
+cmake -G "%CMAKE_TARGET%" -A "%ARCH%"^
+ -DCMAKE_PREFIX_PATH="%DEPS_DIR%"^
+ -DCMAKE_INSTALL_PREFIX="%DEPS_DIR%"^
+ -DBUILD_SHARED_LIBS=ON^
+ . >>"%log_file%" 2>&1 || exit 1
+call :pm-echo "Compiling..."
+msbuild ALL_BUILD.vcxproj /p:Configuration=%MSBUILD_CONFIGURATION% /m >>"%log_file%" 2>&1 || exit 1
+call :pm-echo "Installing files..."
+msbuild INSTALL.vcxproj /p:Configuration=%MSBUILD_CONFIGURATION% /m >>"%log_file%" 2>&1 || exit 1
 cd /D "%DEPS_DIR%"
 
 call :pm-echo "Downloading LibYAML version %LIBYAML_VER%..."
@@ -237,7 +255,8 @@ call :get-extension-zip-from-github "libdeflate"            "%PHP_LIBDEFLATE_VER
 call :get-extension-zip-from-github "xxhash"                "%PHP_XXHASH_VER%"                "pmmp"     "ext-xxhash"              || exit 1
 call :get-extension-zip-from-github "xdebug"                "%PHP_XDEBUG_VER%"                "xdebug"   "xdebug"                  || exit 1
 call :get-extension-zip-from-github "arraydebug"            "%PHP_ARRAYDEBUG_VER%"            "pmmp"     "ext-arraydebug"          || exit 1
-call :get-extension-zip-from-github "bedrockbuf"            "%PHP_BEDROCKBUF_VER%"            "AkmalFairuz"  "ext-bedrockbuf"          || exit 1
+call :get-extension-zip-from-github "bedrockbuf"            "%PHP_BEDROCKBUF_VER%"            "AkmalFairuz"  "ext-bedrockbuf"      || exit 1
+call :get-extension-zip-from-github "zstd"                  "%PHP_ZSTD_VER%"                  "kjdev"    "php-ext-zstd"            || exit 1
 
 call :pm-echo " - crypto: downloading %PHP_CRYPTO_VER%..."
 git clone https://github.com/bukka/php-crypto.git crypto >>"%log_file%" 2>&1 || exit 1
@@ -289,6 +308,7 @@ call configure^
  --enable-xmlwriter^
  --enable-xxhash^
  --enable-zip^
+--enable-zstd^
  --enable-zlib^
  --with-bz2=shared^
  --with-crypto=shared^
