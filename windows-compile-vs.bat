@@ -309,7 +309,7 @@ call configure^
  --enable-xmlwriter^
  --enable-xxhash^
  --enable-zip^
---enable-zstd^
+ --enable-zstd^
  --enable-zlib^
  --with-bz2=shared^
  --with-crypto=shared^
