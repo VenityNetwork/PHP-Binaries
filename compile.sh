@@ -28,7 +28,7 @@ EXT_LIBDEFLATE_VERSION="0.2.1"
 EXT_MORTON_VERSION="0.1.2"
 EXT_XXHASH_VERSION="0.2.0"
 EXT_ARRAYDEBUG_VERSION="0.2.0"
-EXT_BEDROCKBUF_VERSION="5e65852fdd0893b8e34a6f82a1f81cffa5999edb"
+EXT_BYTEBUF_VERSION="72160ba018e5a9f3a57e8464ec90d285ab08a1ab"
 EXT_ZSTD_VERSION="0.13.3"
 
 function write_out {
@@ -1112,7 +1112,7 @@ get_github_extension "xxhash" "$EXT_XXHASH_VERSION" "pmmp" "ext-xxhash"
 
 get_github_extension "arraydebug" "$EXT_ARRAYDEBUG_VERSION" "pmmp" "ext-arraydebug"
 
-get_github_extension "bedrockbuf" "$EXT_BEDROCKBUF_VERSION" "AkmalFairuz" "ext-bedrockbuf"
+get_github_extension "bytebuf" "$EXT_BYTEBUF_VERSION" "AkmalFairuz" "php-ext-bytebuf"
 
 get_github_extension "zstd" "$EXT_ZSTD_VERSION" "kjdev" "php-ext-zstd"
 
@@ -1242,7 +1242,7 @@ $HAVE_MYSQLI \
 --enable-recursionguard \
 --enable-xxhash \
 --enable-arraydebug \
---enable-bedrockbuf \
+--enable-bytebuf \
 --enable-zstd \
 $HAVE_VALGRIND \
 $CONFIGURE_FLAGS >> "$DIR/install.log" 2>&1

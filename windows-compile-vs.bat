@@ -38,7 +38,7 @@ set PHP_LIBDEFLATE_VER=0.2.1
 set PHP_XXHASH_VER=0.2.0
 set PHP_XDEBUG_VER=3.2.2
 set PHP_ARRAYDEBUG_VER=0.2.0
-set PHP_BEDROCKBUF_VER=8eb288ad9c7408db4c558f566130d7b4f3e81c73
+set PHP_BYTEBUF_VER=72160ba018e5a9f3a57e8464ec90d285ab08a1ab
 set PHP_ZSTD_VER=0.13.3
 
 set script_path=%~dp0
@@ -256,7 +256,7 @@ call :get-extension-zip-from-github "libdeflate"            "%PHP_LIBDEFLATE_VER
 call :get-extension-zip-from-github "xxhash"                "%PHP_XXHASH_VER%"                "pmmp"     "ext-xxhash"              || exit 1
 call :get-extension-zip-from-github "xdebug"                "%PHP_XDEBUG_VER%"                "xdebug"   "xdebug"                  || exit 1
 call :get-extension-zip-from-github "arraydebug"            "%PHP_ARRAYDEBUG_VER%"            "pmmp"     "ext-arraydebug"          || exit 1
-call :get-extension-zip-from-github "bedrockbuf"            "%PHP_BEDROCKBUF_VER%"            "AkmalFairuz"  "ext-bedrockbuf"      || exit 1
+call :get-extension-zip-from-github "bytebuf"               "%PHP_BYTEBUF_VER%"           "AkmalFairuz"  "php-ext-bytebuf"    || exit 1
 call :get-extension-zip-from-github "zstd"                  "%PHP_ZSTD_VER%"                  "kjdev"    "php-ext-zstd"            || exit 1
 
 call :pm-echo " - crypto: downloading %PHP_CRYPTO_VER%..."
@@ -291,7 +291,7 @@ call configure^
  --enable-chunkutils2=shared^
  --enable-com-dotnet^
  --enable-ctype^
- --enable-bedrockbuf^
+ --enable-bytebuf^
  --enable-fileinfo=shared^
  --enable-filter^
  --enable-hash^
